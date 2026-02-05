@@ -1,6 +1,6 @@
 import type { BookItem, GoogleBooksResponse } from "../interfaces/googleBooks";
 
-const API_KEY = "AIzaSyDrKYSvOe_871BKn5ffk1sNDLzV98VrqHI";
+const API_KEY = import.meta.env.VITE_API_KEY;
 const API_BASE_URL = "https://www.googleapis.com/books/v1/volumes";
 
 export const searchBooks = async (query: string): Promise<BookItem[]> => {
