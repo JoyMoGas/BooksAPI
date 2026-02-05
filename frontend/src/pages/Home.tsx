@@ -47,7 +47,7 @@ function Home() {
         <div className="absolute top-0 left-0 w-full h-full z-20 flex items-center justify-center">
           <div className="text-center text-white px-6 max-w-4xl">
             <h1 className="text-white text-5xl sm:text-6xl md:text-7xl font-bold mb-4 drop-shadow-lg">
-              WELCOME TO BOOKCLUB
+              WELCOME TO REEDO
             </h1>
             <p className="text-xl sm:text-2xl md:text-3xl text-white mb-8 drop-shadow-md font-light">
               Search Over 100 Million Titles
