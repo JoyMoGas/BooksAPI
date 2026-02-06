@@ -12,9 +12,15 @@ function Home() {
 
   const loadBestsellers = async () => {
     setLoading(true);
-    const books = await getBestsellers();
-    setBestsellers(books);
-    setLoading(false);
+    try {
+      const books = await getBestsellers();
+      setBestsellers(books);
+    } catch (error) {
+      console.error('Failed to load bestsellers:', error);
+      setBestsellers([]);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -23,8 +29,12 @@ function Home() {
 
   const handleSearch = async (query: string) => {
     console.log('Searching for:', query);
-    const results = await searchBooks(query);
-    console.log('Search results:', results);
+    try {
+      const results = await searchBooks(query);
+      console.log('Search results:', results);
+    } catch (error) {
+      console.error('Search failed:', error);
+    }
   };
 
   return (
