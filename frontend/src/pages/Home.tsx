@@ -9,6 +9,9 @@ import { getBestsellers, searchBooks } from '../services/bookService';
 function Home() {
   const [bestsellers, setBestsellers] = useState<BookItem[]>([]);
   const [loading, setLoading] = useState(true);
+  const [searchResults, setSearchResults] = useState<BookItem[]>([]);
+  const [searchLoading, setSearchLoading] = useState(false);
+  const [isSearching, setIsSearching] = useState(false);
 
   const loadBestsellers = async () => {
     setLoading(true);
@@ -29,11 +32,17 @@ function Home() {
 
   const handleSearch = async (query: string) => {
     console.log('Searching for:', query);
+    setSearchLoading(true);
+    setIsSearching(true);
     try {
       const results = await searchBooks(query);
       console.log('Search results:', results);
+      setSearchResults(results);
     } catch (error) {
       console.error('Search failed:', error);
+      setSearchResults([]);
+    } finally {
+      setSearchLoading(false);
     }
   };
 
@@ -62,10 +71,36 @@ function Home() {
             <p className="text-xl sm:text-2xl md:text-3xl text-white mb-8 drop-shadow-md font-light">
               Search Over 100 Million Titles
             </p>
-            <SearchBar onSearch={handleSearch} />
+            <SearchBar onSearch={handleSearch} isLoading={searchLoading} />
           </div>
         </div>
       </section>
+
+      {isSearching && (
+        <section className="bg-gray-50 py-20">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-12">
+              <h2 className="text-4xl font-bold text-gray-900 mb-2">
+                Search Results
+              </h2>
+              <div className="w-24 h-1 bg-teal-600 mx-auto"></div>
+            </div>
+
+            {searchLoading ? (
+              <div className="text-center py-20">
+                <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-teal-600"></div>
+                <p className="mt-4 text-gray-600">Searching...</p>
+              </div>
+            ) : searchResults.length > 0 ? (
+              <BookCarousel books={searchResults} />
+            ) : (
+              <div className="text-center py-20">
+                <p className="text-gray-600">No books found. Try a different search term.</p>
+              </div>
+            )}
+          </div>
+        </section>
+      )}
 
       <section className="bg-white py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

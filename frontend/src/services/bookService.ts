@@ -12,7 +12,7 @@ async function fetchWithRetryAndCircuitBreaker<T>(
   return await googleBooksCircuitBreaker.execute(async () => {
     return await retryWithBackoff(async () => {
       const response = await fetchFn();
-      
+
       if (!response.ok) {
         throw new Error(
           `${errorContext}: ${response.status} ${response.statusText}`

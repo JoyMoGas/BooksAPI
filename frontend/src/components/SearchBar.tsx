@@ -3,14 +3,15 @@ import Icon from './icons/Icon';
 
 interface SearchBarProps {
   onSearch: (query: string) => void;
+  isLoading?: boolean;
 }
 
-function SearchBar({ onSearch }: SearchBarProps) {
+function SearchBar({ onSearch, isLoading = false }: SearchBarProps) {
   const [query, setQuery] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (query.trim()) {
+    if (query.trim() && !isLoading) {
       onSearch(query);
     }
   };
@@ -28,13 +29,15 @@ function SearchBar({ onSearch }: SearchBarProps) {
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search by Title or Author"
             className="w-full pl-12 pr-4 py-4 rounded-full text-gray-700 bg-white/90 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-yellow-400 text-lg"
+            disabled={isLoading}
           />
         </div>
         <button
           type="submit"
-          className="px-8 py-4 bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-semibold rounded-full transition-colors duration-200 shadow-lg hover:shadow-xl"
+          disabled={isLoading}
+          className="px-8 py-4 bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-semibold rounded-full transition-colors duration-200 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          Search
+          {isLoading ? 'Cargando...' : 'Search'}
         </button>
       </div>
     </form>
